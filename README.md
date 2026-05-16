@@ -58,8 +58,9 @@ La pipeline si articola in sei fasi:
    - Metriche: accuratezza, precisione, recall, F1‑score (sia globali che per classe), matrice di confusione.  
    - Confronto sistematico con i risultati del paper (accuratezza binaria ~100% per Normal/Drowsy; multi‑classe ~58.3% con PCA+Ensemble)
 
-## 📦 Struttura del repository
+## Struttura del repository
 
+```
 Progetto_ECG/
 │
 ├── README.md # Questo file
@@ -86,8 +87,28 @@ Progetto_ECG/
 │
 └── results/ # Salvataggio dei modelli e delle metriche
 └── (ignorato da git)
+```
 
-## ⚙️ Requisiti e installazione
+## Dipendenze e librerie utilizzate
+
+Il progetto è basato sull'uso di librerie standard per l'elaborazione di segnali, machine learning e visualizzazione:
+- numpy: Utilizzato per la gestione di array numerici e operazioni vettoriali su segnali ECG e intervalli RR
+- scipy: Utilizzato per implementare il filtro Butterworth passa-banda (0.5 Hz, ordine 6)
+- pandas: Utilizzato per effettuare la lettura del file .pkl del dataset WESAD e manipolazione del DataFrame delle feature estratte.
+- scikit-learn: Utilizzato per i classificatori, come le Random Forest, selezione delle feature, cross-validazione e metriche di performance.
+- neurokit2: Consente di rilevare i picchi R tramite l'algoritmo di Pan-Tompkins, necessaria per il calcolo degli intervalli RR
+- antropy: Consente il calcolo dell'entropia approssimata sulla serie degli intervalli RR, una delle feature non lineari richieste nel paper
+- nolds: Consente il calcolo dell'esponente di Hurst sugli intervalli RR, seconda feature non lineare
+- matplotlib: Usato per generare i grafici, tra i quali segnali grezzo vs filtrato, intervalli RR, feature importance, confronto dei modelli
+- seaborn: Usato per avere una visualizzazione ottimizzata delle matrici di confusione.
+
+Tutte le dipendenze possono essere installate automaticamennte con:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Requisiti e installazione
 
 È richiesto Python 3.8 o superiore. Clonare il repository e installare le dipendenze:
 
