@@ -1,11 +1,11 @@
 """
-visualization.py – Funzioni di visualizzazione per il progetto ECG
+visualization.py – Funzioni di visualizzazione (solo matplotlib).
 """
 
 import os
 import matplotlib.pyplot as plt
 import numpy as np
-import seaborn as sns
+
 
 def plot_raw_vs_filtered(raw, filtered, fs=256, time_window=None, output_dir=None):
     t = np.arange(len(raw)) / fs
@@ -15,7 +15,7 @@ def plot_raw_vs_filtered(raw, filtered, fs=256, time_window=None, output_dir=Non
         t = t[mask]
         raw = raw[mask]
         filtered = filtered[mask]
-    
+
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 5), sharex=True)
     ax1.plot(t, raw, color='gray', alpha=0.7, linewidth=0.8)
     ax1.set_title('ECG grezzo (prima del preprocessing)')
@@ -31,6 +31,7 @@ def plot_raw_vs_filtered(raw, filtered, fs=256, time_window=None, output_dir=Non
         os.makedirs(output_dir, exist_ok=True)
         plt.savefig(os.path.join(output_dir, 'ecg_raw_vs_filtered.png'), dpi=150)
     plt.show()
+
 
 def plot_rr_intervals(rr_intervals, output_dir=None):
     if len(rr_intervals) == 0:
@@ -49,12 +50,13 @@ def plot_rr_intervals(rr_intervals, output_dir=None):
         plt.savefig(os.path.join(output_dir, 'rr_intervals.png'), dpi=150)
     plt.show()
 
+
 def plot_model_comparison(results_df, metric='accuracy', output_dir=None):
     if metric not in results_df.columns:
         print(f"Metrica '{metric}' non trovata. Disponibili: {list(results_df.columns)}")
         return
     vals = results_df[metric]
-    colors = sns.color_palette('Set2', len(vals))
+    colors = plt.cm.Set2(np.linspace(0, 1, len(vals)))
     plt.figure(figsize=(6, 4))
     bars = plt.bar(vals.index, vals.values, color=colors)
     plt.title(f'Confronto modelli – {metric.capitalize()}')
@@ -68,6 +70,7 @@ def plot_model_comparison(results_df, metric='accuracy', output_dir=None):
         os.makedirs(output_dir, exist_ok=True)
         plt.savefig(os.path.join(output_dir, f'model_comparison_{metric}.png'), dpi=150)
     plt.show()
+
 
 def plot_feature_importance(feature_names, importance, title='Importanza delle feature', output_dir=None):
     idx = np.argsort(importance)
